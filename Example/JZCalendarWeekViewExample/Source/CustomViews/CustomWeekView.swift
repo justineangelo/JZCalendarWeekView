@@ -25,7 +25,7 @@ class CustomWeekView: JZBaseWeekView {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let date = flowLayout.dateForColumnHeader(at: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCell.className, for: indexPath) as! EventCell
-        cell.configureCell(event: allEventsBySection[date]![indexPath.row] as! DefaultEvent)
+        cell.configureCell(event: allEventsBySection[date]![indexPath.item] as! DefaultEvent)
         return cell
     }
     

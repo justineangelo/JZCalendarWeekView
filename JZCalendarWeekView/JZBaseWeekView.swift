@@ -248,16 +248,13 @@ open class JZBaseWeekView: UIView {
     ///   - reloadEvents: If provided new events, current events will be reloaded. Default value is nil.
     open func forceReload(reloadEvents: [Date: [JZBaseEvent]]? = nil) {
         if let events = reloadEvents { self.allEventsBySection = events }
-
-        DispatchQueue.main.async { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.updateAllDayBar(isScrolling: false)
-            // initial day is one page before the settle day
-            strongSelf.collectionView.setContentOffsetWithoutDelegate(CGPoint(x:strongSelf.contentViewWidth, y:strongSelf.getYOffset()), animated: false)
-            strongSelf.flowLayout.invalidateLayoutCache()
-            strongSelf.collectionView.reloadData()
-            strongSelf.setHorizontalEdgesOffsetX()
-        }
+        
+        updateAllDayBar(isScrolling: false)
+        // initial day is one page before the settle day
+        collectionView.setContentOffsetWithoutDelegate(CGPoint(x:contentViewWidth, y:getYOffset()), animated: false)
+        flowLayout.invalidateLayoutCache()
+        collectionView.reloadData()
+        setHorizontalEdgesOffsetX()
     }
     
     /// Notice: A temporary solution to fix the scroll from bottom issue when isScrolling
@@ -312,7 +309,7 @@ open class JZBaseWeekView: UIView {
     /// - Parameter indexPath: The indexPath of an item in collectionView
     open func getCurrentEvent(with indexPath: IndexPath) -> JZBaseEvent? {
         let date = flowLayout.dateForColumnHeader(at: indexPath)
-        return isAllDaySupported ? notAllDayEventsBySection[date]?[indexPath.row] : allEventsBySection[date]?[indexPath.row]
+        return isAllDaySupported ? notAllDayEventsBySection[date]?[indexPath.item] : allEventsBySection[date]?[indexPath.item]
     }
     
     open func getDatesInCurrentPage(isScrolling: Bool) -> [Date] {
